@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  # Service de base de données PostgreSQL
+  database:
+    image: postgres:15-alpine
+    container_name: my-postgres-student-dockercompose
+    environment:
+      POSTGRES_DB: db          # Nom de la base de données
+      POSTGRES_USER: usr       # Nom d'utilisateur
+      POSTGRES_PASSWORD: pwd   # Mot de passe
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # Persistance des données
+      - ./db/SQL:/docker-entrypoint-initdb.d:ro # Scripts d'initialisation SQL
+    networks:
+      - app-network
+
+  # Service backend Spring Boot
+  api-student:
+    build:
+      context: .                # Contexte de construction Dockerfile
+      dockerfile: Dockerfile
+    container_name: api-student-dockercompose
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/db
+      SPRING_DATASOURCE_USERNAME: usr
+      SPRING_DATASOURCE_PASSWORD: pwd
+    depends_on:
+      - database               # Attente que la DB soit prête
+    networks:
+      - app-network
+    expose:
+      - "8080"                 # Port interne du conteneur (pas exposé à l’extérieur directement)
+
+  # Service Apache HTTPD (reverse proxy)
+  httpd:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: my-http-proxy2-dockercompose
+    ports:
+      - "8081:80"              # Expose le port 80 du conteneur sur le port 8081 du host
+    depends_on:
+      - api-student
+    networks:
+      - app-network
+
+# Définition du réseau pour la communication inter-conteneurs
+networks:
+  app-network:
+
+# Volume persistant pour PostgreSQL
+volumes:
+  pgdata:
+
+
+ 
