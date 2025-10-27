@@ -26,7 +26,7 @@ jobs:
 
       - name: Build, test and analyze with SonarCloud
         run: |
-          mvn -B verify sonar:sonar \
+          mvn -X -B verify sonar:sonar \
             -Dsonar.projectKey=chiaracarlino_devops_tp2 \
             -Dsonar.organization=chiaracarlino \
             -Dsonar.host.url=https://sonarcloud.io \
