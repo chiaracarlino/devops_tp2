@@ -26,12 +26,7 @@ jobs:
 
       - name: Build, test and analyze with SonarCloud
         run: |
-          mvn -X -B verify sonar:sonar \
-            -Dsonar.projectKey=chiaracarlino_devops_tp2 \
-            -Dsonar.organization=chiaracarlino \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            --file ./pom.xml
+          mvn -B verify sonar:sonar -Dsonar.projectKey=chiaracarlino_devops_tp2 -Dsonar.organization=chiaracarlino -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./pom.xml
 
   # Build and push Docker images (exécuté seulement si tests + Sonar OK)
   build-and-push-docker-image:
