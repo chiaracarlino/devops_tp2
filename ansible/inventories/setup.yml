@@ -1,0 +1,15 @@
+# Inventaire Ansible pour le projet TP1 DevOps
+# Ce fichier définit les serveurs cibles et leurs configurations
+
+all:  # Groupe racine contenant tous les hôtes
+  vars:  # Variables globales appliquées à tous les hôtes
+    ansible_user: admin  # Utilisateur SSH pour se connecter aux serveurs distants
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa  # Chemin vers la clé privée SSH pour l'authentification
+  
+  children:  # Sous-groupes d'hôtes organisés par environnement ou rôle
+    prod:  # Groupe des serveurs de production
+      hosts:  # Liste des serveurs dans le groupe 'prod'
+        chiara.carlino.takima.cloud:  # Hostname ou IP du serveur de production
+
+
+        

@@ -1,0 +1,13 @@
+- hosts: all
+  gather_facts: true     # Collecte des informations système sur chaque hôte
+  become: true           # Exécution des tâches avec les privilèges sudo
+
+  # Toutes les tâches d’installation, configuration et vérification
+  # de Docker se trouvent désormais dans :
+  #   roles/docker/tasks/main.yml
+  roles:
+    - docker
+    - network
+    - database
+    - proxy
+    - app
